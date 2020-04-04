@@ -30,9 +30,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 // prefix /admin/create .. /admin/strore .. /admin/update ....
 
 Route::group(['prefix'=>'admin','middleware'=>'auth'],function () {
-    Route::get('/', function() {
-        echo 'hi, admin';
-    });
+    Route::get('/', 'HomeController@index')->name('admin_index');
     Route::get('/create', 'ArticleController@create')->name('article_create');
     Route::post('/store', 'ArticleController@store')->name('article_create');
     Route::put('/update', 'ArticleController@update')->name('article_create');
