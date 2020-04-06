@@ -13,9 +13,13 @@
     <div class="card-header">إضافة مقالة</div>
 
     <div class="card-body">
-        <form class="form-horizontal" method="post">
-            <div class="form-group">
-                <textarea id="mytextarea">النص هنا</textarea>
+    <form class="form-horizontal" action="{{url('/admin/store')}}" method="post">
+        {{ csrf_field() }}    
+        <div class="form-group">
+            <input class="form-control" type="text" name="title" placeholder="العنوان هنا">
+        </div>
+        <div class="form-group">
+                <textarea name="body" id="mytextarea">النص هنا</textarea>
             </div>
             <div class="form-group">
                 <input class="btn btn-success" type="submit" value="نشر"/>

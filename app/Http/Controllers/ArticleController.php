@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use Illuminate\Http\Request;
-
+use Validator;
 class ArticleController extends Controller
 {
+
+    protected function validator (array $data) {
+        return Validator:: make($data,[
+            'title' => 'required',
+            'body' => 'required'
+        ]);
+    }
     
     /**
      * Display a listing of the resource.
@@ -35,7 +43,18 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // 1. validation Title, Body
+        $this->validator($request->all())->validate();
+        // 2. add to database.
+        // $article = Article::create($request->all());
+        $article = Article::create([
+            'body' => $request->body,
+            'title' => $request->title,
+            'thumbnail' => 'loading',
+        ]);
+        // 3. return to another page.
+        $request->session()->flash('message','تم إضافة المقالة بنجاح');
+        return redirect()->route('admin_index');
     }
 
     /**
