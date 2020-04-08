@@ -22,7 +22,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return view('welcome');
+        $articles = Article::paginate(10);
+        return view('welcome')->with('articles',$articles);
     }
 
     /**
@@ -65,7 +66,8 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        //
+        $article=Article::where('id',$id)->firstOrFail();
+        return view('article')->with('article',$article);
     }
 
     /**

@@ -14,3 +14,6 @@ You can watch our Arabic course using this [link](https://www.youtube.com/playli
 6. Front End :
    1. Introduction to Blade, and getting a sample code from Bootstrap
    2. Preparing the admin template and the form editor using tinyMCE
+7. Controllers:
+   1. Post
+   2. Get
