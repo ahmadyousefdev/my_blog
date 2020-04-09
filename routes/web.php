@@ -32,6 +32,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function () {
     Route::get('/', 'HomeController@index')->name('admin_index');
     Route::get('/create', 'ArticleController@create')->name('article_create');
     Route::post('/store', 'ArticleController@store')->name('article_create');
-    Route::put('/update', 'ArticleController@update')->name('article_create');
+    Route::get('/edit/{id}', 'ArticleController@edit')->name('article_edit');
+    Route::put('/update/{id}', 'ArticleController@update')->name('article_create');
     Route::put('/delete', 'ArticleController@destroy')->name('article_create');
 });

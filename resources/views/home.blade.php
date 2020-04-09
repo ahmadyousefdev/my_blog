@@ -22,6 +22,7 @@
                         <th>ID</th>
                         <th>العنوان</th>
                         <th>تاريخ الإضافة</th>
+                        <th>تعديل</th>
                     </tr>
                     <thead>
                 <tbody>
@@ -30,6 +31,7 @@
                         <td>{{$article->id}}</td>
                         <td>{{$article->title}}</td>
                         <td>{{$article->created_at}}</td>
+                    <td><a class="btn btn-danger" href="{{url('admin/edit/'.$article->id)}}">تعديل</a></td>
                     </tr>
                     @endforeach
                     

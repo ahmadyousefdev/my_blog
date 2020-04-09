@@ -78,7 +78,8 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        //
+        $article=Article::where('id',$id)->firstOrFail();
+        return view('admin.edit')->with('article',$article);
     }
 
     /**
@@ -90,7 +91,13 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $article=Article::where('id',$id)->firstOrFail();
+        $article->update([
+            'body' => $request->body,
+            'title' => $request->title
+        ]);
+        $request->session()->flash('message','تم تعديل المقالة بنجاح');
+        return redirect()->route('admin_index');
     }
 
     /**
