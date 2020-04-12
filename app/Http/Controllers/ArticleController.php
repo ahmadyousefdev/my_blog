@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 class ArticleController extends Controller
 {
@@ -22,7 +24,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::paginate(10);
+        $articles = Article::paginate(20);
         return view('welcome')->with('articles',$articles);
     }
 
@@ -47,11 +49,19 @@ class ArticleController extends Controller
         // 1. validation Title, Body
         $this->validator($request->all())->validate();
         // 2. add to database.
-        // $article = Article::create($request->all());
+
+        // 1. get file from form
+        $file = $request->file('thumbnail');
+        // 2. name the file
+        $time = Carbon::now();
+        $directory = date_format($time,'Y').'/'.date_format($time,'m');
+        $fileName = date_format($time,'h').date_format($time,'s').rand(1,9).'.'.$file->extension();
+        // 3. upload 
+        Storage::disk('public')->putFileAs($directory,$file,$fileName);
         $article = Article::create([
             'body' => $request->body,
             'title' => $request->title,
-            'thumbnail' => 'loading',
+            'thumbnail' => $directory.'/'.$fileName,
         ]);
         // 3. return to another page.
         $request->session()->flash('message','تم إضافة المقالة بنجاح');
@@ -92,10 +102,28 @@ class ArticleController extends Controller
     public function update(Request $request, $id)
     {
         $article=Article::where('id',$id)->firstOrFail();
+
         $article->update([
             'body' => $request->body,
-            'title' => $request->title
+            'title' => $request->title,
         ]);
+
+        if($request->file('thumbnail'))
+        {
+            // 1. get file from form
+            $file = $request->file('thumbnail');
+            // 2. name the file
+            $time = Carbon::now();
+            $directory = date_format($time,'Y').'/'.date_format($time,'m');
+            $fileName = date_format($time,'h').date_format($time,'s').rand(1,9).'.'.$file->extension();
+            // 3. upload 
+            Storage::disk('public')->putFileAs($directory,$file,$fileName);
+            $article->thumbnail = $directory.'/'.$fileName;
+            $article->save();
+        }
+        
+
+        
         $request->session()->flash('message','تم تعديل المقالة بنجاح');
         return redirect()->route('admin_index');
     }
